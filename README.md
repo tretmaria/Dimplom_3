@@ -1,1 +1,1 @@
-# Dimplom_3
+# Diplom_3
