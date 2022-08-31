@@ -4,6 +4,8 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import static com.codeborne.selenide.Condition.*;
+
 public class HomePage {
     @FindBy(how = How.XPATH, using = ".//section[2]/div/button")
 
@@ -23,5 +25,9 @@ public class HomePage {
 
     public void clickAccountButton() {
         accountButton.click();
+    }
+
+    public void showOrderButton() {
+        orderButton.shouldHave((exactText("Оформить заказ"))).shouldBe(visible);
     }
 }

@@ -11,10 +11,6 @@ public class MainPage {
     private SelenideElement accountButton;
     @FindBy(how = How.XPATH, using = ".//p[text()='Конструктор']")
     private SelenideElement constructorButton;
-    @FindBy(how = How.XPATH, using = ".//span[text()='Булки']")
-    private SelenideElement bunsTab;
-    @FindBy(how = How.CSS, using = ".tab_tab_type_current__2BEPc")
-    private SelenideElement currentTab;
     @FindBy(how = How.XPATH, using = ".//button[text()='Оформить заказ']")
     private SelenideElement orderButton;
 
@@ -32,9 +28,5 @@ public class MainPage {
 
     public void clickConstructorButton() {
         constructorButton.click();
-    }
-
-    public boolean checkBunsTab() {
-        return currentTab.getText().contentEquals("Булки");
     }
 }

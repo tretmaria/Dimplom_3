@@ -14,13 +14,12 @@ import ru.yandex.praktikum.pages.*;
 import ru.yandex.praktikum.util.Credentials;
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selectors.byXpath;
 import static com.codeborne.selenide.Selenide.*;
 
 public class AccountPageTest {
-    //User user;
-    UserClient userClient;
-    String accessToken;
+    private UserClient userClient;
+    private User user;
+    private String accessToken;
     private final static String URL = "https://stellarburgers.nomoreparties.site/";
 
     @Before
@@ -29,6 +28,9 @@ public class AccountPageTest {
         Configuration.browser = "chrome";
         Configuration.driverManagerEnabled = true;
         //Configuration.browserSize = "1920x1080";
+        userClient = new UserClient();
+        user = User.getRandomUserCredentials(10);
+
     }
 
     @After
@@ -41,10 +43,7 @@ public class AccountPageTest {
     @DisplayName("Переход из личного кабинета в конструктор")
     @Description("Переход из личного кабинета в конструктор")
     public void shouldEnterConstructorViaAccountTest() {
-        User user = User.getRandomUserCredentials(10);
-        //UserClient userClient;
-        userClient = new UserClient();
-        userClient.createUser(user);
+        accessToken = userClient.createUser(user).extract().path("accessToken");
         userClient.loginUser(Credentials.from(user));
         MainPage mainPage = open(URL, MainPage.class);
         mainPage.clickSignInButton();
@@ -62,10 +61,7 @@ public class AccountPageTest {
     @DisplayName("Переход из личного кабинета на логотип Stellar Burgers")
     @Description("Переход из личного кабинета на логотип Stellar Burgers")
     public void shouldEnterConstructorViaLogoTest() {
-        User user = User.getRandomUserCredentials(10);
-        //UserClient userClient;
-        userClient = new UserClient();
-        userClient.createUser(user);
+        accessToken = userClient.createUser(user).extract().path("accessToken");
         userClient.loginUser(Credentials.from(user));
         MainPage mainPage = open(URL, MainPage.class);
         mainPage.clickSignInButton();
@@ -75,17 +71,14 @@ public class AccountPageTest {
         homePage.clickAccountButton();
         AccountPage accountPage = page(AccountPage.class);
         accountPage.clickLogo();
-        $(byXpath(".//div/header/nav/a/p")).shouldHave(text("Личный кабинет"));
+        accountPage.getAccountHeader().shouldHave(text("Личный кабинет"));
     }
 
     @Test
     @DisplayName("Выход из аккаунта")
     @Description("Выход из аккаунта")
     public void shouldExitFromAccountTest() {
-        User user = User.getRandomUserCredentials(10);
-        //UserClient userClient;
-        userClient = new UserClient();
-        userClient.createUser(user);
+        accessToken = userClient.createUser(user).extract().path("accessToken");
         userClient.loginUser(Credentials.from(user));
         MainPage mainPage = open(URL, MainPage.class);
         mainPage.clickSignInButton();
@@ -95,8 +88,7 @@ public class AccountPageTest {
         homePage.clickAccountButton();
         AccountPage accountPage = page(AccountPage.class);
         accountPage.clickExitButton();
-        LoginPage loginPage1 = page(LoginPage.class);
-        loginPage1.getPageHeader().shouldHave(text("Вход"));
+        loginPage.getPageHeader().shouldHave(text("Вход"));
     }
 
 }

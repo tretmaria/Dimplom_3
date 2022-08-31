@@ -35,8 +35,9 @@ public class UserClient extends RestAssuredClient {
     public ValidatableResponse deleteUser(String accessToken) {
         return given()
                 .spec(getBaseSpec())
+                .auth().oauth2(accessToken)
                 .when()
-                .delete(USER_PATH + "/user/" + accessToken)
+                .delete(USER_PATH + "/user/")
                 .then();
     }
 }

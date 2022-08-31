@@ -14,8 +14,11 @@ import static com.codeborne.selenide.Selenide.$x;
 
 public class RegisterPage {
     Faker faker = new Faker();
-    private SelenideElement nameField = $x(".//div/main/div/form/fieldset[1]/div/div/input");
-    private SelenideElement emailField = $x(".//div/main/div/form/fieldset[2]/div/div/input");
+    @FindBy(how = How.XPATH, using = ".//fieldset[1]/div/div/input")
+    private SelenideElement nameField;
+    @FindBy(how = How.XPATH, using = ".//fieldset[2]/div/div/input")
+    private SelenideElement emailField;
+
     @FindBy(how = How.NAME, using = "Пароль")
     private SelenideElement passwordField;
     private SelenideElement registerButton = $x(".//div/main/div/form/button");
@@ -37,19 +40,11 @@ public class RegisterPage {
     }
 
 
-    public LoginPage fillForm(String name, String email, String password) {
+    public void fillForm(String name, String email, String password) {
         nameField.setValue(name);
         emailField.setValue(email);
         passwordField.setValue(password);
         registerButton.click();
-        return new LoginPage();
     }
 
-    public LoginPage fillFormWithInvalidData(String name, String email, String password) {
-        nameField.setValue(faker.artist().name());
-        emailField.setValue(faker.internet().emailAddress());
-        passwordField.setValue(RandomStringUtils.randomAlphabetic(5));
-        clickRegisterButton();
-        return new LoginPage();
-    }
 }

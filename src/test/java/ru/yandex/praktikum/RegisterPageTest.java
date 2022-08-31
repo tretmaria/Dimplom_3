@@ -22,8 +22,9 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class RegisterPageTest {
-    UserClient userClient;
-    String accessToken;
+    private UserClient userClient;
+    private User user;
+    private String accessToken;
     private final static String URL = "https://stellarburgers.nomoreparties.site/";
 
     @Before
@@ -32,12 +33,11 @@ public class RegisterPageTest {
         Configuration.browser = "chrome";
         Configuration.driverManagerEnabled = true;
         //Configuration.browserSize = "1920x1080";
-
+        userClient = new UserClient();
     }
 
     @After
     public void tearDown() {
-        userClient.deleteUser(accessToken);
         Selenide.closeWebDriver();
     }
 
@@ -45,27 +45,25 @@ public class RegisterPageTest {
     @DisplayName("Успешно зарегистрироваться")
     @Description("Успешно зарегистрироваться")
     public void shouldRegisterSuccessfullyTest() {
-        String registerPageUrl = "https://stellarburgers.nomoreparties.site/register";
-        User user = User.getRandomUserCredentials(10);
-        userClient = new UserClient();
+        String registerPageUrl = URL + "register";
+        user = User.getRandomUserCredentials(10);
         RegisterPage registerPage = open(registerPageUrl, RegisterPage.class);
         registerPage.fillForm(user.getName(), user.getEmail(), user.getPassword());
-        LoginPage loginPage1 = page(LoginPage.class);
-        userClient.loginUser(Credentials.from(user));
-        loginPage1.fillForm(user.getEmail(), user.getPassword());
+        LoginPage loginPage = page(LoginPage.class);
+        accessToken = userClient.loginUser(Credentials.from(user)).extract().path("accessToken");
+        loginPage.fillForm(user.getEmail(), user.getPassword());
         HomePage homePage = page(HomePage.class);
-        String buttonText = String.valueOf(homePage.getOrderButton().shouldHave(text("Оформить заказ")));
-        String textToCheck = "Оформить заказ";
-        assertThat(buttonText, containsString(textToCheck));
+        homePage.showOrderButton();
+        userClient.deleteUser(accessToken);
     }
 
     @Test
     @DisplayName("Ошибка для некорректного пароля")
     @Description("Ошибка для некорректного пароля. Минимальный пароль — шесть символов")
     public void shouldShowErrorIfPasswordIsLessThanSixSymbolsTest() {
-        String registerPageUrl = "https://stellarburgers.nomoreparties.site/register";
-        User user = User.getRandomUserCredentials(5);
-        userClient = new UserClient();
+        String registerPageUrl = URL + "register";
+        user = User.getRandomUserCredentials(5);
+        accessToken = userClient.loginUser(Credentials.from(user)).extract().path("accessToken");
         RegisterPage registerPage = open(registerPageUrl, RegisterPage.class);
         registerPage.fillForm(user.getName(), user.getEmail(), user.getPassword());
         registerPage.showErrorMessage();

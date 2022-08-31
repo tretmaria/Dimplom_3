@@ -40,7 +40,7 @@ public class ConstructorPageTest {
         mainPage.clickConstructorButton();
         ConstructorPage constructorPage = page(ConstructorPage.class);
         constructorPage.checkBunsTab();
-        $(byXpath(".//div[2]/ul[1]/a[2]/p")).shouldHave(text("Краторная булка"));
+        constructorPage.getBun().shouldHave(text("Краторная булка"));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class ConstructorPageTest {
         ConstructorPage constructorPage = page(ConstructorPage.class);
         constructorPage.clickSaucesTab();
         constructorPage.checkSaucesTab();
-        $(byXpath(".//div[2]/ul[2]/a[1]/p")).shouldHave(text("Соус Spicy-X"));
+        constructorPage.getSauce().shouldHave(text("Соус Spicy-X"));
     }
 
     @Test
@@ -64,6 +64,6 @@ public class ConstructorPageTest {
         ConstructorPage constructorPage = page(ConstructorPage.class);
         constructorPage.clickFillingsTab();
         constructorPage.checkFillingsTab();
-        $(byXpath(".//div[2]/ul[3]/a[3]/p")).shouldHave(text("Биокотлета из марсианской Магнолии"));
+        constructorPage.getFilling().shouldHave(text("Биокотлета из марсианской Магнолии"));
     }
 }

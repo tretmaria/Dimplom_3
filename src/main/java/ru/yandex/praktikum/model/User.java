@@ -4,10 +4,10 @@ import com.github.javafaker.Faker;
 import org.apache.commons.lang3.RandomStringUtils;
 
 public class User {
-    public String name;
-    public String email;
-    public String password;
-    static Faker faker = new Faker();
+    private String name;
+    private String email;
+    private String password;
+    private static Faker faker = new Faker();
 
     public String getName() {
         return name;
@@ -51,12 +51,15 @@ public class User {
         final String password = RandomStringUtils.randomAlphabetic(chars);
         return new User(name, email, password);
     }
+
     public static User getUserEmail() {
         return new User().setEmail(faker.internet().emailAddress());
     }
+
     public static User getUserPassword(int chars) {
         return new User().setPassword(RandomStringUtils.randomAlphabetic(chars));
     }
+
     public static User getUserName() {
         return new User().setName(faker.artist().name());
     }

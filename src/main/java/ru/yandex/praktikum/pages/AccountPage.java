@@ -16,9 +16,15 @@ public class AccountPage {
     private SelenideElement profileTab;
     @FindBy(how = How.XPATH, using = ".//button[text()='Выход']")
     private SelenideElement exitButton;
+    @FindBy(how = How.XPATH, using = ".//p[text()='Личный кабинет']")
+    private SelenideElement accountHeader;
 
     public SelenideElement getExitButton() {
         return exitButton;
+    }
+
+    public SelenideElement getAccountHeader() {
+        return accountHeader;
     }
 
     public void clickExitButton() {

@@ -23,6 +23,9 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class HomePageTest {
+    private UserClient userClient;
+    private User user;
+    private String accessToken;
 
     private final static String URL = "https://stellarburgers.nomoreparties.site/";
 
@@ -32,10 +35,14 @@ public class HomePageTest {
         Configuration.browser = "chrome";
         Configuration.driverManagerEnabled = true;
         //Configuration.browserSize = "1920x1080";
+        user = User.getRandomUserCredentials(10);
+        userClient = new UserClient();
     }
 
     @After
     public void tearDown() {
+
+        userClient.deleteUser(accessToken);
         Selenide.closeWebDriver();
     }
 
@@ -43,10 +50,7 @@ public class HomePageTest {
     @DisplayName("Переход в личный кабинет после входа")
     @Description("Переход в личный кабинет после входа")
     public void shouldEnterAccountTest() {
-        User user = User.getRandomUserCredentials(10);
-        UserClient userClient;
-        userClient = new UserClient();
-        userClient.createUser(user);
+        accessToken = userClient.createUser(user).extract().path("accessToken");
         userClient.loginUser(Credentials.from(user));
         MainPage mainPage = open(URL, MainPage.class);
         mainPage.clickSignInButton();

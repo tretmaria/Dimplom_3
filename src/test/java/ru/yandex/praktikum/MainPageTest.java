@@ -5,6 +5,7 @@ import com.codeborne.selenide.Selenide;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
+import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MainPageTest {
     private UserClient userClient;
+    private User user;
     private String accessToken;
     private final static String URL = "https://stellarburgers.nomoreparties.site/";
     @Before
@@ -31,6 +33,8 @@ public class MainPageTest {
         Configuration.browser = "chrome";
         Configuration.driverManagerEnabled = true;
         //Configuration.browserSize = "1920x1080";
+        user = User.getRandomUserCredentials(10);
+        userClient = new UserClient();
     }
     @After
     public void tearDown(){
@@ -41,11 +45,8 @@ public class MainPageTest {
     @DisplayName("Войти по кнопке «Войти в аккаунт» на главной")
     @Description("Войти по кнопке «Войти в аккаунт» на главной")
     public void shouldLoginViaMainPageTest(){
-        User user = User.getRandomUserCredentials(10);
-        //UserClient userClient;
-        userClient = new UserClient();
         userClient.createUser(user);
-        userClient.loginUser(Credentials.from(user));
+        accessToken = userClient.loginUser(Credentials.from(user)).extract().path("accessToken");
         MainPage mainPage = open(URL, MainPage.class);
         mainPage.clickSignInButton();
         LoginPage loginPage = page(LoginPage.class);
@@ -59,11 +60,8 @@ public class MainPageTest {
     @DisplayName("Войти через кнопку «Личный кабинет»")
     @Description("Войти через кнопку «Личный кабинет»")
     public void shouldLoginViaAccountPageTest(){
-        User user = User.getRandomUserCredentials(10);
-        //UserClient userClient;
-        userClient = new UserClient();
         userClient.createUser(user);
-        userClient.loginUser(Credentials.from(user));
+        accessToken = userClient.loginUser(Credentials.from(user)).extract().path("accessToken");
         MainPage mainPage = open(URL, MainPage.class);
         mainPage.clickAccountButton();
         LoginPage loginPage = page(LoginPage.class);

@@ -9,7 +9,7 @@ import static com.codeborne.selenide.Selenide.$x;
 public class LoginPage {
     @FindBy(how = How.XPATH, using = ".//div/main/div/h2")
     private SelenideElement loginPageHeader;
-    @FindBy(how = How.XPATH, using = "//div/main/div/form/fieldset[1]/div/div/input")
+    @FindBy(how = How.XPATH, using = ".//fieldset[1]/div/div/input")
     private SelenideElement emailField;
     @FindBy(how = How.NAME, using = "Пароль")
     private SelenideElement passwordField;
@@ -45,10 +45,9 @@ public class LoginPage {
         return loginPageHeader;
     }
 
-    public HomePage fillForm(String email, String password) {
-        emailField.setValue(email);
-        passwordField.setValue(password);
-        signInButton.click();
-        return new HomePage();
+    public void fillForm(String email, String password) {
+        setEmail(email);
+        setPassword(password);
+        clickSignInButton();
     }
 }
