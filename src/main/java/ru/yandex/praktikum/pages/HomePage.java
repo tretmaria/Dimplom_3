@@ -22,6 +22,7 @@ public class HomePage {
     public SelenideElement getOrderButton() {
         return orderButton;
     }
+    public SelenideElement getAccountHeader(){ return accountButton;}
 
     public void clickAccountButton() {
         accountButton.click();

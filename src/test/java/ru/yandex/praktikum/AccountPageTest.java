@@ -71,7 +71,7 @@ public class AccountPageTest {
         homePage.clickAccountButton();
         AccountPage accountPage = page(AccountPage.class);
         accountPage.clickLogo();
-        accountPage.getAccountHeader().shouldHave(text("Личный кабинет"));
+        homePage.getAccountHeader().shouldHave(text("Личный кабинет"));
     }
 
     @Test
