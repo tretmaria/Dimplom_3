@@ -15,10 +15,8 @@ import ru.yandex.praktikum.pages.LoginPage;
 import ru.yandex.praktikum.pages.RegisterPage;
 import ru.yandex.praktikum.util.Credentials;
 
-import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.page;
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class RegisterPageTest {
@@ -38,6 +36,9 @@ public class RegisterPageTest {
 
     @After
     public void tearDown() {
+        if (accessToken != null) {
+            userClient.delete(accessToken);
+        }
         Selenide.closeWebDriver();
     }
 
@@ -50,11 +51,10 @@ public class RegisterPageTest {
         RegisterPage registerPage = open(registerPageUrl, RegisterPage.class);
         registerPage.fillForm(user.getName(), user.getEmail(), user.getPassword());
         LoginPage loginPage = page(LoginPage.class);
-        accessToken = userClient.loginUser(Credentials.from(user)).extract().path("accessToken");
+        accessToken = userClient.login(Credentials.from(user)).extract().path("accessToken");
         loginPage.fillForm(user.getEmail(), user.getPassword());
         HomePage homePage = page(HomePage.class);
         homePage.showOrderButton();
-        userClient.deleteUser(accessToken);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class RegisterPageTest {
     public void shouldShowErrorIfPasswordIsLessThanSixSymbolsTest() {
         String registerPageUrl = URL + "register";
         user = User.getRandomUserCredentials(5);
-        accessToken = userClient.loginUser(Credentials.from(user)).extract().path("accessToken");
+        accessToken = userClient.login(Credentials.from(user)).extract().path("accessToken");
         RegisterPage registerPage = open(registerPageUrl, RegisterPage.class);
         registerPage.fillForm(user.getName(), user.getEmail(), user.getPassword());
         registerPage.showErrorMessage();

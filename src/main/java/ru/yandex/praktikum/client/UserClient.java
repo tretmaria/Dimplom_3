@@ -11,9 +11,8 @@ public class UserClient extends RestAssuredClient {
     private static final String USER_PATH = "api/auth";
 
     @Step("Create a user")
-    public ValidatableResponse createUser(User user) {
+    public ValidatableResponse create(User user) {
         return given()
-                .header("Content-type", "application/json")
                 .spec(getBaseSpec())
                 .body(user)
                 .when()
@@ -22,7 +21,7 @@ public class UserClient extends RestAssuredClient {
     }
 
     @Step("Login a user")
-    public ValidatableResponse loginUser(Credentials credentials) {
+    public ValidatableResponse login(Credentials credentials) {
         return given()
                 .spec(getBaseSpec())
                 .body(credentials)
@@ -32,10 +31,10 @@ public class UserClient extends RestAssuredClient {
     }
 
     @Step("Delete a courier")
-    public ValidatableResponse deleteUser(String accessToken) {
+    public ValidatableResponse delete(String accessToken) {
         return given()
                 .spec(getBaseSpec())
-                .auth().oauth2(accessToken)
+                .header("Authorization", accessToken)
                 .when()
                 .delete(USER_PATH + "/user/")
                 .then();

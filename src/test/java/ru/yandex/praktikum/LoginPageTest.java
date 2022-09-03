@@ -15,8 +15,6 @@ import ru.yandex.praktikum.pages.*;
 import ru.yandex.praktikum.util.Credentials;
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selectors.byClassName;
-import static com.codeborne.selenide.Selectors.byXpath;
 import static com.codeborne.selenide.Selenide.*;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -36,12 +34,11 @@ public class LoginPageTest {
         //Configuration.browserSize = "1920x1080";
         userClient = new UserClient();
         user = User.getRandomUserCredentials(10);
-
     }
 
     @After
     public void tearDown() {
-        userClient.deleteUser(accessToken);
+        userClient.delete(accessToken);
         Selenide.closeWebDriver();
     }
 
@@ -53,8 +50,8 @@ public class LoginPageTest {
         RegisterPage registerPage = open(registerPageUrl, RegisterPage.class);
         registerPage.clickSignInButton();
         LoginPage loginPage = page(LoginPage.class);
-        accessToken = userClient.createUser(user).extract().path("accessToken");
-        userClient.loginUser(Credentials.from(user));
+        accessToken = userClient.create(user).extract().path("accessToken");
+        userClient.login(Credentials.from(user));
         loginPage.fillForm(user.getEmail(), user.getPassword());
         HomePage homePage = page(HomePage.class);
         String buttonText = String.valueOf(homePage.getOrderButton().shouldHave(text("Оформить заказ")));
@@ -67,8 +64,8 @@ public class LoginPageTest {
     @Description("Войти через кнопку в форме восстановления пароля")
     public void shouldLoginViaForgotPasswordFormTest() {
         String forgotPasswordUrl = URL + "forgot-password";
-        accessToken = userClient.createUser(user).extract().path("accessToken");
-        userClient.loginUser(Credentials.from(user));
+        accessToken = userClient.create(user).extract().path("accessToken");
+        userClient.login(Credentials.from(user));
         ForgotPasswordPage forgotPasswordPage = open(forgotPasswordUrl, ForgotPasswordPage.class);
         forgotPasswordPage.clickLoginButton();
         LoginPage loginPage = page(LoginPage.class);
@@ -78,5 +75,4 @@ public class LoginPageTest {
         String textToCheck = "Оформить заказ";
         assertThat(buttonText, containsString(textToCheck));
     }
-
 }

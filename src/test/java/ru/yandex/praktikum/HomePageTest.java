@@ -41,8 +41,7 @@ public class HomePageTest {
 
     @After
     public void tearDown() {
-
-        userClient.deleteUser(accessToken);
+        userClient.delete(accessToken);
         Selenide.closeWebDriver();
     }
 
@@ -50,8 +49,8 @@ public class HomePageTest {
     @DisplayName("Переход в личный кабинет после входа")
     @Description("Переход в личный кабинет после входа")
     public void shouldEnterAccountTest() {
-        accessToken = userClient.createUser(user).extract().path("accessToken");
-        userClient.loginUser(Credentials.from(user));
+        accessToken = userClient.create(user).extract().path("accessToken");
+        userClient.login(Credentials.from(user));
         MainPage mainPage = open(URL, MainPage.class);
         mainPage.clickSignInButton();
         LoginPage loginPage = page(LoginPage.class);

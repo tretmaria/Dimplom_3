@@ -30,12 +30,11 @@ public class AccountPageTest {
         //Configuration.browserSize = "1920x1080";
         userClient = new UserClient();
         user = User.getRandomUserCredentials(10);
-
     }
 
     @After
     public void tearDown() {
-        userClient.deleteUser(accessToken);
+        userClient.delete(accessToken);
         Selenide.closeWebDriver();
     }
 
@@ -43,8 +42,8 @@ public class AccountPageTest {
     @DisplayName("Переход из личного кабинета в конструктор")
     @Description("Переход из личного кабинета в конструктор")
     public void shouldEnterConstructorViaAccountTest() {
-        accessToken = userClient.createUser(user).extract().path("accessToken");
-        userClient.loginUser(Credentials.from(user));
+        accessToken = userClient.create(user).extract().path("accessToken");
+        userClient.login(Credentials.from(user));
         MainPage mainPage = open(URL, MainPage.class);
         mainPage.clickSignInButton();
         LoginPage loginPage = page(LoginPage.class);
@@ -61,8 +60,8 @@ public class AccountPageTest {
     @DisplayName("Переход из личного кабинета на логотип Stellar Burgers")
     @Description("Переход из личного кабинета на логотип Stellar Burgers")
     public void shouldEnterConstructorViaLogoTest() {
-        accessToken = userClient.createUser(user).extract().path("accessToken");
-        userClient.loginUser(Credentials.from(user));
+        accessToken = userClient.create(user).extract().path("accessToken");
+        userClient.login(Credentials.from(user));
         MainPage mainPage = open(URL, MainPage.class);
         mainPage.clickSignInButton();
         LoginPage loginPage = page(LoginPage.class);
@@ -78,8 +77,8 @@ public class AccountPageTest {
     @DisplayName("Выход из аккаунта")
     @Description("Выход из аккаунта")
     public void shouldExitFromAccountTest() {
-        accessToken = userClient.createUser(user).extract().path("accessToken");
-        userClient.loginUser(Credentials.from(user));
+        accessToken = userClient.create(user).extract().path("accessToken");
+        userClient.login(Credentials.from(user));
         MainPage mainPage = open(URL, MainPage.class);
         mainPage.clickSignInButton();
         LoginPage loginPage = page(LoginPage.class);
@@ -90,5 +89,4 @@ public class AccountPageTest {
         accountPage.clickExitButton();
         loginPage.getPageHeader().shouldHave(text("Вход"));
     }
-
 }

@@ -5,7 +5,6 @@ import com.codeborne.selenide.Selenide;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,15 +37,15 @@ public class MainPageTest {
     }
     @After
     public void tearDown(){
-        userClient.deleteUser(accessToken);
+        userClient.delete(accessToken);
         Selenide.closeWebDriver();
     }
     @Test
     @DisplayName("Войти по кнопке «Войти в аккаунт» на главной")
     @Description("Войти по кнопке «Войти в аккаунт» на главной")
     public void shouldLoginViaMainPageTest(){
-        userClient.createUser(user);
-        accessToken = userClient.loginUser(Credentials.from(user)).extract().path("accessToken");
+        userClient.create(user);
+        accessToken = userClient.login(Credentials.from(user)).extract().path("accessToken");
         MainPage mainPage = open(URL, MainPage.class);
         mainPage.clickSignInButton();
         LoginPage loginPage = page(LoginPage.class);
@@ -60,8 +59,8 @@ public class MainPageTest {
     @DisplayName("Войти через кнопку «Личный кабинет»")
     @Description("Войти через кнопку «Личный кабинет»")
     public void shouldLoginViaAccountPageTest(){
-        userClient.createUser(user);
-        accessToken = userClient.loginUser(Credentials.from(user)).extract().path("accessToken");
+        userClient.create(user);
+        accessToken = userClient.login(Credentials.from(user)).extract().path("accessToken");
         MainPage mainPage = open(URL, MainPage.class);
         mainPage.clickAccountButton();
         LoginPage loginPage = page(LoginPage.class);
