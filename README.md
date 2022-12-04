@@ -1,43 +1,40 @@
 # Diplom_3
-Описание: нужно протестировать веб-приложение Stellar Burgers - https://stellarburgers.nomoreparties.site/.
-Описать элементы с помощью Page Object.
-Протестировать функциональность в Google Chrome или Яндекс.Браузере. Подключить Allure-отчёт.
 
-Регистрация
+Description: We need to test the Stellar Burgers web application - https://stellarburgers.nomoreparties.site/. Describe the elements using Page Object. Test the functionality in Google Chrome or Yandex.Browser. Make an Allure report.
 
-Проверить:
+Registration:
 
-Успешную регистрацию.
+Successful registration.
 
-Ошибку для некорректного пароля. Минимальный пароль — шесть символов.
+Error for invalid password. Minimum password is six characters.
 
-Вход
 
-Проверить:
+Login:
 
-вход по кнопке «Войти в аккаунт» на главной,
+Login via the "Sign in" button on the home page,
 
-вход через кнопку «Личный кабинет»,
+Login via the "My account" button,
 
-вход через кнопку в форме регистрации,
+Login via the button in the registration form,
 
-вход через кнопку в форме восстановления пароля.
+Login through the button in the form of password recovery.
 
-Переход в личный кабинет
 
-Проверить переход по клику на «Личный кабинет».
+Transition to the personal account:
 
-Переход из личного кабинета в конструктор
+Check the transition by clicking on "My Account".
 
-Проверить переход по клику на «Конструктор» и на логотип Stellar Burgers.
 
-Выход из аккаунта
+Switch from personal account to the constructor:
 
-Проверить выход по кнопке «Выйти» в личном кабинете.
+Check the transition by clicking on the "Constructor" button and the Stellar Burgers logo.
 
-Раздел «Конструктор»
 
-Проверить, что работают переходы к разделам:
-«Булки»,
-«Соусы»,
-«Начинки».
+Sign out of your account:
+
+Check the exit by clicking on the "Logout" button in the personal account.
+
+
+Section "Constructor":
+
+Check that the transitions to the sections work: "Buns", "Sauces", "Toppings".
